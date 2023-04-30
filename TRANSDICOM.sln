@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRANSDICOM", "TRANSDICOM\TRANSDICOM.csproj", "{747451F8-29E9-4112-AE98-C39B1745987B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{747451F8-29E9-4112-AE98-C39B1745987B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{747451F8-29E9-4112-AE98-C39B1745987B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{747451F8-29E9-4112-AE98-C39B1745987B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{747451F8-29E9-4112-AE98-C39B1745987B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A90A7C85-9CEC-415F-A2B8-05429D6F7BF0}
+	EndGlobalSection
+EndGlobal

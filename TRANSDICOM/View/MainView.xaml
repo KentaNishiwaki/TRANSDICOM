@@ -1,0 +1,155 @@
+﻿<Window x:Class="TRANSDICOM.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TRANSDICOM.View"
+        xmlns:vm="clr-namespace:TRANSDICOM.ViewModel"
+        xmlns:xc="clr-namespace:TRANSDICOM.Behavior"
+        mc:Ignorable="d"
+        Title="TRANSDICOM Valid Code Co., Ltd (What time is it? Game time,woo)" Height="450" Width="750">
+    <Window.Resources>
+        <ResourceDictionary Source="/Behavior/StyleDictionary.xaml" />
+    </Window.Resources>
+    <Grid Width="757">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="240"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="1" Width="80">①PatientID:</Label>
+            <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=PatientID }" Style="{StaticResource strText}" />
+        </Grid>
+        <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="740" HorizontalAlignment="Left"  >
+            <StackPanel Orientation="Vertical" >
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/img/icon_001430_16.png" Margin="5,0,0,0"/>
+                    <Button Command="{Binding FindStudiesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">②Find Studies</Button>
+                    <Image Source="/img/icon_017100_16.png"  Margin="300,0,0,0"/>
+                    <Button Command="{Binding ExecCommand}"  DockPanel.Dock="Top" Width="250" Margin="0,0,5,0">Send all Studies after entering ①</Button>
+                </StackPanel>
+                <DockPanel  Height="80"  Margin="5,0,20,0" >
+                    <xc:CustomListView ItemsSource="{Binding VLstStudy, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key" DockPanel.Dock="Top" 
+                          CustomSelectedItems="{Binding selStudy, Mode=TwoWay}" x:Name="lvStudy" AllowDrop="True" />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/img/icon_001430_16.png" Margin="5,0,0,0"/>
+                    <Button Command="{Binding FindSeriesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">③Find Series</Button>
+                    <Image Source="/img/icon_017100_16.png"  Margin="300,0,0,0"/>
+                    <Button Command="{Binding StudiesExecCommand}"  DockPanel.Dock="Top" Width="250" Margin="0,0,5,0">Send all Series, after click ② and select rows</Button>
+                </StackPanel>
+                <DockPanel  Height="80"  Margin="5,0,20,0" >
+                    <xc:CustomListView ItemsSource="{Binding VLstSeries, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key" DockPanel.Dock="Top" 
+                          CustomSelectedItems="{Binding selSeries, Mode=TwoWay}" x:Name="lvSeries" AllowDrop="True" />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/img/icon_017100_16.png" Margin="5,0,0,0"/>
+                    <Button Command="{Binding SeriesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">④Send Series</Button>
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+        <Grid Grid.Column="0" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="240">(Move From)</Label>
+            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=setting.FromServerIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.FromServerPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">SCP AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.FromCallingAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Width="80">SCU AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.FromCalledAETitle }" Style="{StaticResource strText}" />
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Width="80">(Destination)</Label>
+            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="1" Width="160" IsEnabled="False" Text="{Binding Path= LocalIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.DestinationPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">AE TITLE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.DestinationAE }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Width="240" FontSize="11">↑If this AE is another PC,do not use 'Move To'</Label>
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="240">(Move To)</Label>
+            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=setting.ToServerIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.ToServerPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">SCP AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.ToCallingAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Width="80">SCU AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.ToCalledAETitle }" Style="{StaticResource strText}" />
+        </Grid>
+        <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  >
+            <Label Content="{Binding ErrMessege}" FontSize="14" FontWeight="Bold" Foreground="Blue" />
+            <Separator/>
+            <Label Content="Studies:"/>
+            <Label Content="{Binding currentCount.StudiesCurrent}"/>
+            <Label Content="/"/>
+            <Label Content="{Binding currentCount.StudiesCount}"/>
+            <Label Content="   Series:"/>
+            <Label Content="{Binding currentCount.SeriesCurrent}"/>
+            <Label Content="/"/>
+            <Label Content="{Binding currentCount.SeriesCount}"/>
+            <Label Content="   CMove:"/>
+            <Label Content="{Binding currentCount.CMoveCurrent}"/>
+            <Label Content="/"/>
+            <Label Content="{Binding currentCount.CMoveCount}"/>
+            <Label Content="   CStore:"/>
+            <Label Content="{Binding currentCount.CStoreCurrent}"/>
+            <Label Content="/"/>
+            <Label Content="{Binding currentCount.CStoreCount}"/>
+        </StatusBar>
+    </Grid>
+
+</Window>

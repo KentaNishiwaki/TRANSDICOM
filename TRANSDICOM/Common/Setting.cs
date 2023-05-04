@@ -94,7 +94,7 @@ namespace TRANSDICOM.Common
                 {
                     CheckCharacters = false,
                 };
-                var xmlFile = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "setting.xml");
+                var xmlFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"TRANSDICOM", "setting.xml");
                 using (var streamReader = new StreamReader(xmlFile, Encoding.UTF8))
                 using (var xmlReader
                         = System.Xml.XmlReader.Create(streamReader, xmlSettings))
@@ -105,7 +105,20 @@ namespace TRANSDICOM.Common
             }
             catch (Exception)
             {
-                return new Setting();
+                var rc = new Setting();
+                rc.FromServerIP = "localhost";
+                rc.FromServerPort = 5678;
+                rc.FromCallingAETitle = "CONQUESTSRV1";
+                rc.FromCalledAETitle = "TRANSDICOM_SCU";
+                rc.DestinationAE = "TRANSDICOM";
+                rc.DestinationPort = 105;
+                rc.ToServerIP = "localhost";
+                rc.ToServerPort = 104;
+                rc.ToCallingAETitle = "RTNS1_SCP";
+                rc.ToCalledAETitle = "TRANSDICOM_SCU";
+
+
+                return rc;
             }
         }
 
@@ -113,9 +126,13 @@ namespace TRANSDICOM.Common
         {
             try
             {
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TRANSDICOM");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
                 // シリアライズする
                 var xmlSerializer1 = new XmlSerializer(typeof(Setting));
-                var xmlFile = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "setting.xml");
+                var xmlFile = Path.Combine(path, "setting.xml");
                 using (var streamWriter = new StreamWriter(xmlFile, false, Encoding.UTF8))
                 {
                     xmlSerializer1.Serialize(streamWriter, this);

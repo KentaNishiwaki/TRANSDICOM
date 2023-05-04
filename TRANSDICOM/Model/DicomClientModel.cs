@@ -216,9 +216,14 @@ namespace TRANSDICOM.Model
         {
             try
             {
-                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "tmp");
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TRANSDICOM");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
+                path = Path.Combine(path, "tmp");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+
                 CStoreCount = (new DirectoryInfo(path)).GetFiles("*.*", System.IO.SearchOption.AllDirectories).Length;
                 foreach (var f in (new DirectoryInfo(path)).GetFiles("*.*", System.IO.SearchOption.AllDirectories))
                 {
@@ -256,7 +261,10 @@ namespace TRANSDICOM.Model
         {
             try
             {
-                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "tmp");
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TRANSDICOM");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path = Path.Combine(path, "tmp");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
 

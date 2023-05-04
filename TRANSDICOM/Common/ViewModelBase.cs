@@ -13,7 +13,7 @@ namespace TRANSDICOM.Common
     public class ViewModelBase : INotifyPropertyChanged
     {
         /// <summary>
-        /// プロパティの変更があったときに発行されます。
+        /// プロパティの変更があったときに発行されます
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 

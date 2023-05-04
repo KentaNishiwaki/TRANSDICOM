@@ -28,9 +28,14 @@ namespace TRANSDICOM.Model
                 var seriesUid = request.Dataset.GetValue<string>(DicomTag.SeriesInstanceUID, 0);
                 var instUid = request.SOPInstanceUID.UID;
 
-                var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "tmp");
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TRANSDICOM");
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
+                path = Path.Combine(path, "tmp");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+
                 path = System.IO.Path.Combine(path, studyUid);
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TRANSDICOM", "TRANSDICOM\TRANSDICOM.csproj", "{747451F8-29E9-4112-AE98-C39B1745987B}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupX64", "SetupX64\SetupX64.vdproj", "{9CE6AB40-5017-48E0-83F0-7339028C1451}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{747451F8-29E9-4112-AE98-C39B1745987B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{747451F8-29E9-4112-AE98-C39B1745987B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{747451F8-29E9-4112-AE98-C39B1745987B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CE6AB40-5017-48E0-83F0-7339028C1451}.Debug|Any CPU.ActiveCfg = Debug
+		{9CE6AB40-5017-48E0-83F0-7339028C1451}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

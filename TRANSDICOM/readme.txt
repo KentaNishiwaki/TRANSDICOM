@@ -23,7 +23,10 @@ Framework  : .NET 7.0 (C#)
       Author:fo-dicom contributors
       MS-PL License
       https://github.com/fo-dicom/fo-dicom
-
+  ・ICON8
+      Author:Icons8 LLC
+	　https://icons8.com 
+	
 [LICENSE]
 TRANSDICOM
 Copyright (C) 2023-2023 Valid Code Co., Ltd

@@ -21,7 +21,7 @@ namespace TRANSDICOM.Model
 
         public IDicomServer Start()
         {
-            var dServer = DicomServer.Create<DicomCStoreProvider>(setting.DestinationPort);
+            var dServer = DicomServer.Create<DicomCStoreProvider>(setting.DestinationList[setting.DestinationSelectIndex].DestinationPort);
             DicomCStoreProvider.OnCStoreRequestCallBack = (request) =>
             {
                 var studyUid = request.Dataset.GetValue<string>(DicomTag.StudyInstanceUID, 0);

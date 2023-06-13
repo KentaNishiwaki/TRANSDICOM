@@ -1,13 +1,12 @@
 ﻿using CharLS;
 using Dicom;
+using Dicom.Imaging;
 using Dicom.Network;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using TRANSDICOM.Common;
 
@@ -38,8 +37,8 @@ namespace TRANSDICOM.Model
             try
             { 
                 var studies = new List<studiesInfo>();
-                var client = new Dicom.Network.Client.DicomClient(setting.FromServerIP, setting.FromServerPort
-                    , false, setting.FromCallingAETitle, setting.FromCalledAETitle);
+                var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
+                    , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
                 var cfind = DicomCFindRequest.CreateStudyQuery(PatientID);
                 bool resComplete = false;
             
@@ -105,8 +104,8 @@ namespace TRANSDICOM.Model
         public List<seriesInfo> GetSeries(string StudyInstanceUID)
         {
             var series = new List<seriesInfo>();
-            var client = new Dicom.Network.Client.DicomClient(setting.FromServerIP, setting.FromServerPort
-                , false, setting.FromCallingAETitle, setting.FromCalledAETitle);
+            var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
+                , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
             var cfind = DicomCFindRequest.CreateSeriesQuery(StudyInstanceUID);
             bool resComplete = false;
             cfind.OnResponseReceived = (DicomCFindRequest rq, DicomCFindResponse rp) =>
@@ -159,9 +158,9 @@ namespace TRANSDICOM.Model
 
         public bool ExecCMove(seriesInfo series)
         {
-            var client = new Dicom.Network.Client.DicomClient(setting.FromServerIP, setting.FromServerPort
-                , false, setting.FromCallingAETitle, setting.FromCalledAETitle);
-            var cmove = new DicomCMoveRequest(setting.DestinationAE, series.StudyInstanceUID, series.SeriesInstanceUID);
+            var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
+                , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
+            var cmove = new DicomCMoveRequest(setting.DestinationList[setting.DestinationSelectIndex].DestinationAE, series.StudyInstanceUID, series.SeriesInstanceUID);
             bool moveComplete = false;
             cmove.OnResponseReceived += (DicomCMoveRequest request, DicomCMoveResponse response) =>
             {
@@ -224,12 +223,12 @@ namespace TRANSDICOM.Model
                     Directory.CreateDirectory(path);
 
 
-                CStoreCount = (new DirectoryInfo(path)).GetFiles("*.*", System.IO.SearchOption.AllDirectories).Length;
-                foreach (var f in (new DirectoryInfo(path)).GetFiles("*.*", System.IO.SearchOption.AllDirectories))
+                CStoreCount = (new DirectoryInfo(path)).GetFiles("*.dcm", System.IO.SearchOption.AllDirectories).Length;
+                foreach (var f in (new DirectoryInfo(path)).GetFiles("*.dcm", System.IO.SearchOption.AllDirectories))
                 {
                     CStoreCurrent = CStoreCurrent + 1;
-                    var client = new Dicom.Network.Client.DicomClient(setting.ToServerIP, setting.ToServerPort
-                                    , false, setting.ToCalledAETitle, setting.ToCallingAETitle);
+                    var client = new Dicom.Network.Client.DicomClient(setting.ToList[setting.ToSelectIndex].ToServerIP, setting.ToList[setting.ToSelectIndex].ToServerPort
+                                    , false, setting.ToList[setting.ToSelectIndex].ToCalledAETitle, setting.ToList[setting.ToSelectIndex].ToCallingAETitle);
                     var cstore = new DicomCStoreRequest(f.FullName);
                     bool reqComplete = false;
 
@@ -284,6 +283,25 @@ namespace TRANSDICOM.Model
             }
 
         }
+        public string GetCashPath() 
+        {
+            try
+            {
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TRANSDICOM");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path = Path.Combine(path, "tmp");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                return path;
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+                return "";
+            }
+        }
         public void CashDelete(string targetDirectoryPath)
         {
             try
@@ -316,6 +334,125 @@ namespace TRANSDICOM.Model
                 string s = ex.Message;
             }
 
+        }
+
+        internal bool SetPreviewImages(string cashPah, ref List<dicomImagesInfo> images)
+        {
+            try
+            {
+
+                foreach (var f in (new DirectoryInfo(cashPah)).GetFiles("*.dcm", System.IO.SearchOption.AllDirectories))
+                {
+                    if (f.Exists)
+                    {
+                        try
+                        { 
+                            var file = DicomFile.Open(f.FullName, FileReadOption.ReadAll);
+                            var dicom = new Dicom.Imaging.DicomImage(file.Dataset);
+                            if (dicom.NumberOfFrames != 1)
+                            {
+                                throw new Exception();
+                            }
+                            else
+                            {
+                                var bytes = (dicom.RenderImage() as RawImage).AsBytes();
+                                
+                                var bmp = SixLabors.ImageSharp.Image.LoadPixelData<SixLabors.ImageSharp.PixelFormats.Bgra32>(SixLabors.ImageSharp.Configuration.Default, bytes, dicom.Width, dicom.Height);
+                                string InstanceNumber = "";
+                                if (file.Dataset.GetValue<string>(DicomTag.InstanceNumber, 0).IndexOf('\0') >= 0)
+                                {
+                                    InstanceNumber = file.Dataset.GetValue<string>(DicomTag.InstanceNumber, 0)[0] + "";
+                                }
+                                else
+                                {
+                                    InstanceNumber = file.Dataset.GetValue<string>(DicomTag.InstanceNumber, 0);
+                                }
+                                int intInstanceNumber =0;
+                                int.TryParse(InstanceNumber ,out intInstanceNumber);
+
+                                using (var stream = new MemoryStream())
+                                {
+                                    var en = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder();
+                                    bmp.Save(stream, en);
+                                    images.Add(new dicomImagesInfo(intInstanceNumber, InstanceNumber, stream.GetBuffer()));
+                                }
+                                //string filepath = "";
+                                //filepath = Path.Combine(cashPah, InstanceNumber + ".bmp");
+                                //using (var stream = new FileStream(filepath, FileMode.OpenOrCreate))
+                                //{
+                                //    var en = new SixLabors.ImageSharp.Formats.Bmp.BmpEncoder();
+                                //    bmp.Save(stream, en);
+                                //}
+                                //using (var stream = new FileStream(filepath, FileMode.Open))
+                                //{
+                                //    byte[] bs = new byte[stream.Length];
+                                //    stream.Read(bs, 0, bs.Length);
+                                //    images.Add(new dicomImagesInfo(intInstanceNumber, InstanceNumber, bs));
+                                //}
+
+                            }
+                        } catch (Exception ex) 
+                        {
+                            try
+                            {
+                                var fileNonImage = DicomFile.Open(f.FullName, FileReadOption.ReadAll);
+                                string InstanceNumber = "";
+                                int intInstanceNumber = -1;
+                                int.TryParse(InstanceNumber, out intInstanceNumber);
+                                //var dicomNonImage = new Dicom.Imaging.DicomImage(fileNonImage.Dataset);
+                                CreateImageModel cm = new CreateImageModel();
+                                images.Add(new dicomImagesInfo(intInstanceNumber, InstanceNumber, cm.GetBlankImage(fileNonImage.Dataset.GetValue<string>(DicomTag.Modality, 0))));
+                                
+                            }
+                            catch { }
+
+                        }
+                    }
+                }
+                images = images.OrderBy(f => f.ID).ToList();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+                return false;
+            }
+        }
+
+        internal List<echomessege> Echo(string fromServerIP, int fromServerPort, string fromCalledAETitle, string fromCallingAETitle)
+        {
+            List<echomessege> status = new List<echomessege>();
+            int index = 1;
+            try
+            {
+                var client = new Dicom.Network.Client.DicomClient(fromServerIP, fromServerPort
+                    , false, fromCalledAETitle, fromCallingAETitle);
+                var echo = new DicomCEchoRequest();
+                bool echoComplete = false;
+                echo.OnResponseReceived = (DicomCEchoRequest rq, DicomCEchoResponse rp) =>
+                {
+                    status.Add(new echomessege(index, rp.Status.ToString()));
+                    index++;
+                };
+                client.AddRequestAsync(echo);
+                client.StateChanged += (s, e) => {
+                    status.Add(new echomessege(index, e.NewState.ToString()));
+                    index++;
+                    if (e.NewState.ToString() == "COMPLETED")
+                    {
+                        echoComplete = true;
+                    }
+                };
+                client.SendAsync().ConfigureAwait(false);
+
+                while (echoComplete != true)
+                {
+                    // Log("waiting...waiting....");
+                }
+            }
+            catch (Exception ex) { status.Add(new echomessege(index,ex.Message)); }
+            return status;
         }
     }
 }

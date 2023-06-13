@@ -1,4 +1,5 @@
 ﻿using Dicom;
+using Dicom.Imaging.Render;
 using Dicom.Log;
 using Dicom.Network;
 using System;
@@ -11,7 +12,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TRANSDICOM.Common;
 using TRANSDICOM.Model;
@@ -24,6 +27,8 @@ namespace TRANSDICOM.ViewModel
         private string[] args;
         public Setting __setting;
         public Setting setting { get { return __setting; } set { __setting = value; RaisePropertyChanged("setting"); } }
+
+        #region property
         string _PatientID = "";  //= string.Empty;
         public string PatientID { get { return _PatientID; } set { _PatientID = value; RaisePropertyChanged("PatientID"); } }
         string _LocalIP = "";  //= string.Empty;
@@ -31,6 +36,8 @@ namespace TRANSDICOM.ViewModel
 
         string _ErrMessege = string.Empty;
         public string ErrMessege { get { return _ErrMessege; } set { _ErrMessege = value; RaisePropertyChanged("ErrMessege"); } }
+        string _ErrMessegeColor = "#0000FF";
+        public string ErrMessegeColor { get { return _ErrMessegeColor; } set { _ErrMessegeColor = value; RaisePropertyChanged("ErrMessegeColor"); } }
         public CurrentCount _currentCount;
         public CurrentCount currentCount { get { return _currentCount; } set { _currentCount = value; RaisePropertyChanged("currentCount"); } }
         
@@ -44,8 +51,13 @@ namespace TRANSDICOM.ViewModel
         IList _selSeries;
         public IList selSeries { get { return _selSeries; } set { _selSeries = value; selSeriesChanged(_selSeries); } }
 
+        List<dicomImagesInfo> _PreviewImages;
+        public List<dicomImagesInfo> PreviewImages { get { return _PreviewImages; } set { _PreviewImages = value; RaisePropertyChanged("PreviewImages"); } }
 
-
+        bool _ButtonIsEnabled = true;  //= string.Empty;
+        public bool ButtonIsEnabled { get { return _ButtonIsEnabled; } set { _ButtonIsEnabled = value; RaisePropertyChanged("ButtonIsEnabled"); } }
+        #endregion property
+        #region Command
         /// <summary>
         /// 実行ボタンのコマンド・変数
         /// </summary>
@@ -142,9 +154,47 @@ namespace TRANSDICOM.ViewModel
                 return _SeriesExecCommand;
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        private DelegateCommand _PreviewImagesExecCommand;
+        /// <summary>
+        /// 
+        /// </summary>
+        public DelegateCommand PreviewImagesExecCommand
+        {
+            get
+            {
+                if (_PreviewImagesExecCommand == null)
+                {
+                    _PreviewImagesExecCommand = new DelegateCommand(PreviewImagesExecCommandExecute);
+                }
+
+                return _PreviewImagesExecCommand;
+            }
+        }
+        private DelegateCommand _ShowEditSettingExecCommand;
+        public DelegateCommand ShowEditSettingExecCommand
+        {
+            get
+            {
+                if (_ShowEditSettingExecCommand == null)
+                {
+                    _ShowEditSettingExecCommand = new DelegateCommand(ShowEditSettingExecCommandExecute);
+                }
+
+                return _ShowEditSettingExecCommand;
+            }
+        }
+
+        #endregion Command
+
         public MainViewModel(string[] _args, Setting _setting)
         {
             setSetting(_args, _setting);
+
+
+
             currentCount = new CurrentCount();
 
             string hostname = Dns.GetHostName();
@@ -166,52 +216,6 @@ namespace TRANSDICOM.ViewModel
             if (_args.Length >= 1)
             {
                 PatientID = _args[0];
-            }
-            if (_args.Length >= 2)
-            {
-                setting.FromServerIP = _args[1];
-            }
-            if (_args.Length >= 3)
-            {
-                int intPort = 0;
-                int.TryParse(_args[2], out intPort);
-                setting.FromServerPort = intPort;
-            }
-            if (_args.Length >= 4)
-            {
-                setting.FromCallingAETitle = _args[3];
-            }
-            if (_args.Length >= 5)
-            {
-                setting.FromCalledAETitle = _args[4];
-            }
-            if (_args.Length >= 6)
-            {
-                setting.DestinationAE = _args[5];
-            }
-            if (_args.Length >= 7)
-            {
-                int intPort = 0;
-                int.TryParse(_args[6], out intPort);
-                setting.DestinationPort = intPort;
-            }
-            if (_args.Length >= 8)
-            {
-                setting.ToServerIP = _args[7];
-            }
-            if (_args.Length >= 9)
-            {
-                int intPort = 0;
-                int.TryParse(_args[8], out intPort);
-                setting.ToServerPort = intPort;
-            }
-            if (_args.Length >= 10)
-            {
-                setting.ToCallingAETitle = _args[9];
-            }
-            if (_args.Length >= 11)
-            {
-                setting.ToCalledAETitle = _args[10];
             }
         }
 
@@ -237,32 +241,32 @@ namespace TRANSDICOM.ViewModel
         {
             try
             {
-                setting.Save();
+                ButtonIsEnabled = false;
 
                 ClearCounter();
 
                 if (string.IsNullOrEmpty(PatientID))
                 {
-                    ErrMessege = "Enter a PatientID";
+                    ShowMessege("Enter a PatientID",true);
                     return;
                 }
 
-
-                ErrMessege = "Connecting";
+                ShowMessege("Connecting",false);
 
                 DicomClientModel model = new DicomClientModel(setting);
 
+                List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                PreviewImages = previewImages;
                 model.ClearCash();
 
                 var lstStudies = await Task.Run<List<studiesInfo>>(() => model.GetStudies(PatientID));
                 currentCount.StudiesCount = lstStudies.Count();
                 if (lstStudies.Count == 0)
                 {
-                    ErrMessege = "It was no Study!!";
-                    setting.Save();
+                    ShowMessege("It was no Study!!", true);
                     return;
                 }
-                ErrMessege = "Some Studies are found";
+                ShowMessege("Some Studies are found", false);
 
                 var newStudy = new Dictionary<string, string>();
 
@@ -277,15 +281,17 @@ namespace TRANSDICOM.ViewModel
 
 
 
-                ErrMessege = "Our tasks are done!";
+                ShowMessege("Our tasks are done!", false);
+                ButtonIsEnabled = true;
 
             }
             catch (Exception ex)
             {
-                ErrMessege = ex.Message;
+                ShowMessege(ex.Message,true);
             }
             finally
             {
+                ButtonIsEnabled = true;
             }
         }
 
@@ -305,27 +311,30 @@ namespace TRANSDICOM.ViewModel
         {
             try
             {
-                setting.Save();
+                ButtonIsEnabled = false;
 
                 ClearCounter();
 
                 if (string.IsNullOrEmpty(PatientID))
                 {
-                    ErrMessege = "Enter a PatientID";
+                    ShowMessege("Enter a PatientID", true);
                     return;
                 }
 
 
-                ErrMessege = "Connecting";
+                ShowMessege("Connecting", false);
 
                 if (selStudy is null || selStudy.Count == 0)
                 {
-                    ErrMessege = "Select a StudyInstanceUID";
+                    ShowMessege("Select a StudyInstanceUID", true);
                     return;
                 }
 
                 DicomClientModel model = new DicomClientModel(setting);
                 currentCount.StudiesCount = selStudy.Count;
+
+                List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                PreviewImages = previewImages;
                 model.ClearCash();
 
                 var newSeries = new Dictionary<string, string>();
@@ -338,12 +347,12 @@ namespace TRANSDICOM.ViewModel
                     currentCount.SeriesCurrent = 0;
                     if (lstSeries.Count == 0)
                     {
-                        ErrMessege = "It was no Series!!";
+                        ShowMessege("It was no Series!!", true);
                     }
 
                     foreach (var series in lstSeries)
                     {
-                        ErrMessege = "Some Studies are found";
+                        ShowMessege("Some Studies are found", false);
                         currentCount.SeriesCurrent++;
                         
                         if (newSeries.ContainsKey(study.Key + ":" + series.SeriesInstanceUID) == false)
@@ -352,15 +361,16 @@ namespace TRANSDICOM.ViewModel
                 }
                 VLstSeries = newSeries;
 
-                ErrMessege = "Our tasks are done!";
+                ShowMessege("Our tasks are done!", false);
 
             }
             catch (Exception ex)
             {
-                ErrMessege = ex.Message;
+                ShowMessege(ex.Message, true);
             }
             finally
             {
+                ButtonIsEnabled = true;
             }
         }
 
@@ -371,18 +381,17 @@ namespace TRANSDICOM.ViewModel
             IDicomServer? dServer = null;
             try
             {
-                setting.Save();
+                ButtonIsEnabled = false;
 
                 ClearCounter();
 
                 if (string.IsNullOrEmpty(PatientID))
                 {
-                    ErrMessege = "Enter a PatientID";
+                    ShowMessege("Enter a PatientID", true);
                     return;
                 }
 
-
-                ErrMessege = "Connecting";
+                ShowMessege("Connecting", false);
 
                 DicomServerModel s = new DicomServerModel(setting);
                 dServer = s.Start();
@@ -412,17 +421,18 @@ namespace TRANSDICOM.ViewModel
                     }
                 };
 
+                List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                PreviewImages = previewImages;
                 model.ClearCash();
 
                 var lstStudies = await Task.Run<List<studiesInfo>>(() => model.GetStudies(PatientID));
                 currentCount.StudiesCount = lstStudies.Count();
                 if (lstStudies.Count == 0)
                 {
-                    ErrMessege = "It was no Study!!";
-                    setting.Save();
+                    ShowMessege("It was no Study!!", true);
                     return;
                 }
-                ErrMessege = "Our tasks are running...";
+                ShowMessege("Our tasks are running...", false);
 
                 foreach (var study in lstStudies)
                 {
@@ -432,7 +442,7 @@ namespace TRANSDICOM.ViewModel
                     currentCount.SeriesCurrent = 0;
                     if (lstSeries.Count == 0)
                     {
-                        ErrMessege = "It was no Series!!";
+                        ShowMessege("It was no Series!!", true);
                     }
                     foreach (var series in lstSeries)
                     {
@@ -445,15 +455,16 @@ namespace TRANSDICOM.ViewModel
 
 
 
-                ErrMessege = "Our tasks are done!";
+                ShowMessege("Our tasks are done!", false);
 
             }
             catch (Exception ex)
             {
-                ErrMessege = ex.Message;
+                ShowMessege(ex.Message, true);
             }
             finally 
             {
+                ButtonIsEnabled = true;
                 if (dServer is not null)
                 {
                     dServer.Stop();
@@ -468,18 +479,17 @@ namespace TRANSDICOM.ViewModel
             IDicomServer? dServer = null;
             try
             {
-                setting.Save();
+                ButtonIsEnabled = false;
 
                 ClearCounter();
 
                 if (string.IsNullOrEmpty(PatientID))
                 {
-                    ErrMessege = "Enter a PatientID";
+                    ShowMessege("Enter a PatientID", true);
                     return;
                 }
 
-
-                ErrMessege = "Connecting";
+                ShowMessege("Connecting", false);
 
                 DicomServerModel s = new DicomServerModel(setting);
                 dServer = s.Start();
@@ -509,18 +519,19 @@ namespace TRANSDICOM.ViewModel
                     }
                 };
 
+                List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                PreviewImages = previewImages;
                 model.ClearCash();
 
                 if (selStudy is null || selStudy.Count == 0)
                 {
-                    ErrMessege = "Select a StudyInstanceUID!!";
-                    setting.Save();
+                    ShowMessege("Select a StudyInstanceUID!!", true);
                     return;
                 }
 
                 currentCount.StudiesCount = selStudy.Count;
 
-                ErrMessege = "Our tasks are running...";
+                ShowMessege("Our tasks are running...", false);
 
                 foreach (KeyValuePair<string, string> study in selStudy)
                 {
@@ -530,7 +541,7 @@ namespace TRANSDICOM.ViewModel
                     currentCount.SeriesCurrent = 0;
                     if (lstSeries.Count == 0)
                     {
-                        ErrMessege = "It was no Series!!";
+                        ShowMessege("It was no Series!!", true);
                     }
                     foreach (var series in lstSeries)
                     {
@@ -543,15 +554,16 @@ namespace TRANSDICOM.ViewModel
 
 
 
-                ErrMessege = "Our tasks are done!";
+                ShowMessege("Our tasks are done!", false);
 
             }
             catch (Exception ex)
             {
-                ErrMessege = ex.Message;
+                ShowMessege(ex.Message, true);
             }
             finally
             {
+                ButtonIsEnabled = true;
                 if (dServer is not null)
                 {
                     dServer.Stop();
@@ -566,25 +578,119 @@ namespace TRANSDICOM.ViewModel
             IDicomServer? dServer = null;
             try
             {
-                setting.Save();
+                ButtonIsEnabled = false;
+
+                DicomClientModel model = new DicomClientModel(setting);
+                model.PropertyChanged += (object? sender, System.ComponentModel.PropertyChangedEventArgs e) =>
+                {
+                    if (sender is null)
+                    {
+                        return;
+                    }
+                    var v = (DicomClientModel)sender;
+                    switch (e.PropertyName)
+                    {
+                        case "CMoveCount":
+                            currentCount.CMoveCount = v.CMoveCount;
+                            break;
+                        case "CMoveCurrent":
+                            currentCount.CMoveCurrent = v.CMoveCurrent;
+                            break;
+                        case "CStoreCount":
+                            currentCount.CStoreCount = v.CStoreCount;
+                            break;
+                        case "CStoreCurrent":
+                            currentCount.CStoreCurrent = v.CStoreCurrent;
+                            break;
+                    }
+                };
+
+                if (PreviewImages == null || PreviewImages.Count == 0)
+                { 
+                    ClearCounter();
+
+                    if (string.IsNullOrEmpty(PatientID))
+                    {
+                        ShowMessege("Enter a PatientID", true);
+                        return;
+                    }
+
+
+                    if (selSeries is null || selSeries.Count == 0)
+                    {
+                        ShowMessege("Select a SeriesInstanceUID", true);
+                        return;
+                    }
+
+                    ShowMessege("Connecting", false);
+
+                    DicomServerModel s = new DicomServerModel(setting);
+                    dServer = s.Start();
+
+                    List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                    PreviewImages = previewImages;
+                    model.ClearCash();
+
+                    ShowMessege("Our tasks are running...", false);
+                    currentCount.SeriesCount = selSeries.Count;
+                    foreach (KeyValuePair<string, string> series in selSeries)
+                    {
+                        currentCount.SeriesCurrent++;
+                        string[] v = series.Key.Split(':');
+                        var seriesinfo = new seriesInfo(v[0], v[1], "");
+                        var rc = await Task.Run<bool>(() => model.ExecCMove(seriesinfo));
+                    }
+
+                }
+
+                ShowMessege("Our tasks are running...", false);
+                await Task.Run<bool>(() => model.ExecCStoreCL());
+
+                ShowMessege("Our tasks are done!", false);
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessege(ex.Message, true);
+            }
+            finally
+            {
+                ButtonIsEnabled = true;
+                if (dServer is not null)
+                {
+                    dServer.Stop();
+                    dServer.Dispose();
+                }
+            }
+
+
+        }
+
+
+        
+        private async void PreviewImagesExecCommandExecute()
+        {
+            IDicomServer? dServer = null;
+            try
+            {
+                ButtonIsEnabled = false;
 
                 ClearCounter();
 
                 if (string.IsNullOrEmpty(PatientID))
                 {
-                    ErrMessege = "Enter a PatientID";
+                    ShowMessege("Enter a PatientID", true);
                     return;
                 }
 
 
                 if (selSeries is null || selSeries.Count == 0)
                 {
-                    ErrMessege = "Select a SeriesInstanceUID";
+                    ShowMessege("Select a SeriesInstanceUID", true);
                     return;
                 }
 
-
-                ErrMessege = "Connecting";
+                ShowMessege("Connecting", false);
 
                 DicomServerModel s = new DicomServerModel(setting);
                 dServer = s.Start();
@@ -614,9 +720,11 @@ namespace TRANSDICOM.ViewModel
                     }
                 };
 
+                List<dicomImagesInfo> previewImages = new List<dicomImagesInfo>();
+                PreviewImages = previewImages;
                 model.ClearCash();
 
-                ErrMessege = "Our tasks are running...";
+                ShowMessege("Our tasks are running...", false);
                 currentCount.SeriesCount = selSeries.Count;
                 foreach (KeyValuePair<string, string> series in selSeries)
                 {
@@ -626,27 +734,51 @@ namespace TRANSDICOM.ViewModel
                     var rc = await Task.Run<bool>(() => model.ExecCMove(seriesinfo));
                 }
 
-                await Task.Run<bool>(() => model.ExecCStoreCL());
+                string cashPah = model.GetCashPath();
+                previewImages = new List<dicomImagesInfo>();
+                model.SetPreviewImages(cashPah, ref previewImages);
+                PreviewImages = previewImages;
 
-
-
-                ErrMessege = "Our tasks are done!";
+                ShowMessege("Our tasks are done!", false);
 
             }
             catch (Exception ex)
             {
-                ErrMessege = ex.Message;
+                ShowMessege(ex.Message, true);
             }
             finally
             {
+                ButtonIsEnabled = true;
                 if (dServer is not null)
                 {
                     dServer.Stop();
                     dServer.Dispose();
                 }
             }
-
-
+        }
+        public string ShowCashPath()
+        {
+            DicomClientModel model = new DicomClientModel(setting);
+            return model.GetCashPath();
+        }
+        private void ShowEditSettingExecCommandExecute()
+        {
+            WindowNavService windowNav = new WindowNavService();
+            IWindowService windowService = windowNav;
+            windowService.CreateWindow(setting);
+            setting.GetSetting();
+        }
+        private void ShowMessege(string errmessege, bool err)
+        {
+            ErrMessege = errmessege;
+            if (err == true)
+            {
+                ErrMessegeColor = "#FF0000";
+            }
+            else
+            {
+                ErrMessegeColor = "#0000FF";
+            }
         }
 
     }

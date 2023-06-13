@@ -7,65 +7,126 @@
         xmlns:vm="clr-namespace:TRANSDICOM.ViewModel"
         xmlns:xc="clr-namespace:TRANSDICOM.Behavior"
         mc:Ignorable="d"
-        Title="TRANSDICOM Valid Code Co., Ltd (What time is it? Game time,woo)" Height="450" Width="750">
+        Title="TRANSDICOM Valid Code Co., Ltd (What time is it? Game time,woo)" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary Source="/Behavior/StyleDictionary.xaml" />
     </Window.Resources>
-    <Grid Width="757">
+    <!--https://flatuicolors.com/palette/us-->
+    <Grid Margin="2,5,5,5" Background="#636e72">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="165"/>
             <ColumnDefinition Width="240"/>
-            <ColumnDefinition Width="240"/>
-            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Margin="5,5,5,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="1" Width="80">①PatientID:</Label>
-            <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=PatientID }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="0" Width="80" Foreground="White" VerticalContentAlignment="Center">① PatientID:</Label>
+            <TextBox Grid.Column="1" Grid.Row="0" Width="160" Text="{Binding Path=PatientID }" Style="{StaticResource strText}"  VerticalContentAlignment="Center" />
+            <DockPanel Grid.Column="2" Grid.Row="0" Width="Auto" HorizontalAlignment="Right" >
+                <Button Command="{Binding ShowEditSettingExecCommand}"  DockPanel.Dock="Right" Margin="5,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/database_administrator_96px.png" Width="32" Height="32" />
+                        <Label Height="32" VerticalContentAlignment="Center" >Setting</Label>
+                    </StackPanel>
+                </Button>
+                <Button Name="btnCashPath" DockPanel.Dock="Right" Margin="5,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/folder_96px.png" Width="32" Height="32" />
+                        <Label Height="32" VerticalContentAlignment="Center" >Show Cash</Label>
+                    </StackPanel>
+                </Button>
+
+            </DockPanel>
         </Grid>
-        <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Width="740" HorizontalAlignment="Left"  >
+        <DockPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Left"  >
             <StackPanel Orientation="Vertical" >
-                <StackPanel Orientation="Horizontal" >
-                    <Image Source="/img/icon_001430_16.png" Margin="5,0,0,0"/>
-                    <Button Command="{Binding FindStudiesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">②Find Studies</Button>
-                    <Image Source="/img/icon_017100_16.png"  Margin="300,0,0,0"/>
-                    <Button Command="{Binding ExecCommand}"  DockPanel.Dock="Top" Width="250" Margin="0,0,5,0">Send all Studies after entering ①</Button>
-                </StackPanel>
-                <DockPanel  Height="80"  Margin="5,0,20,0" >
+                <DockPanel >
+                    <Button Command="{Binding FindStudiesExecCommand}"  DockPanel.Dock="Left" Margin="5,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/search_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >② Find Studies</Label>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ExecCommand}"  DockPanel.Dock="Right" Margin="350,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/export_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >Send all Studies after entering ①</Label>
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
+                <DockPanel  Height="80"  Margin="5,5,5,5" >
                     <xc:CustomListView ItemsSource="{Binding VLstStudy, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key" DockPanel.Dock="Top" 
                           CustomSelectedItems="{Binding selStudy, Mode=TwoWay}" x:Name="lvStudy" AllowDrop="True" />
                 </DockPanel>
-                <StackPanel Orientation="Horizontal" >
-                    <Image Source="/img/icon_001430_16.png" Margin="5,0,0,0"/>
-                    <Button Command="{Binding FindSeriesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">③Find Series</Button>
-                    <Image Source="/img/icon_017100_16.png"  Margin="300,0,0,0"/>
-                    <Button Command="{Binding StudiesExecCommand}"  DockPanel.Dock="Top" Width="250" Margin="0,0,5,0">Send all Series, after click ② and select rows</Button>
-                </StackPanel>
-                <DockPanel  Height="80"  Margin="5,0,20,0" >
+                <DockPanel  >
+                    <Button Command="{Binding FindSeriesExecCommand}"  DockPanel.Dock="Left" Margin="5,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/search_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >③ Find Series</Label>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding StudiesExecCommand}"  DockPanel.Dock="Right" Margin="300,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/export_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >Send all Series, after click ② and select rows</Label>
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
+                <DockPanel  Height="80"  Margin="5,5,5,5" >
                     <xc:CustomListView ItemsSource="{Binding VLstSeries, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key" DockPanel.Dock="Top" 
                           CustomSelectedItems="{Binding selSeries, Mode=TwoWay}" x:Name="lvSeries" AllowDrop="True" />
                 </DockPanel>
-                <StackPanel Orientation="Horizontal" >
-                    <Image Source="/img/icon_017100_16.png" Margin="5,0,0,0"/>
-                    <Button Command="{Binding SeriesExecCommand}"  DockPanel.Dock="Top" Width="100" Margin="5,0,5,0">④Send Series</Button>
-                </StackPanel>
+                <DockPanel >
+                    <Button Command="{Binding PreviewImagesExecCommand}"  DockPanel.Dock="Left" Margin="5,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/x-ray_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >③' Preview Images</Label>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SeriesExecCommand}"  DockPanel.Dock="Right"  Margin="430,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/img/export_96px.png" Width="32" Height="32" />
+                            <Label Height="32" VerticalContentAlignment="Center" >④ Send Series</Label>
+                        </StackPanel>
+                    </Button>
+                </DockPanel>
+                <DockPanel  Height="156"  Margin="5,5,5,5" >
+                    <ListView ItemsSource="{Binding PreviewImages, Mode=OneWay}" SelectionMode="Extended" x:Name="lvPreviewImages" AllowDrop="True" Width="720" >
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="128" Height="128">
+                                    <Image Source="{Binding Image}"></Image>
+                                    <TextBlock Text="{Binding Title}" Foreground="Yellow"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </DockPanel>
             </StackPanel>
         </DockPanel>
-        <Grid Grid.Column="0" Grid.Row="2">
+        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" >
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Background="#55efc4" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -73,21 +134,37 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="240">(Move From)</Label>
-            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <ComboBox Grid.Column="0" Grid.Row="1" Width="200" Grid.ColumnSpan="2" ItemsSource="{Binding setting.FromList, Mode=OneWay}" SelectedIndex="{Binding setting.FromSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="32">
+                            <Image Source="{Binding FromImage}"></Image>
+                            <TextBlock FontSize="18" Height="32" VerticalAlignment="Center"
+                                Text="{Binding FromName}"
+                                ToolTip="{Binding FromDescription}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+            <!--<Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
             <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=setting.FromServerIP }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
             <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.FromServerPort }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="3" Width="80">SCP AE:</Label>
             <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.FromCallingAETitle }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="4" Width="80">SCU AE:</Label>
-            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.FromCalledAETitle }" Style="{StaticResource strText}" />
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.FromCalledAETitle }" Style="{StaticResource strText}" />-->
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="2">
+        <Grid Grid.Column="2" Grid.Row="3" Background="#ffeaa7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -95,20 +172,37 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
             <Label Grid.Column="0" Grid.Row="0" Width="80">(Destination)</Label>
-            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <ComboBox Grid.Column="0" Grid.Row="1" Width="200" ItemsSource="{Binding setting.DestinationList, Mode=OneWay}" SelectedIndex="{Binding setting.DestinationSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="32">
+                            <Image Source="{Binding DestinationImage}"></Image>
+                            <TextBlock FontSize="18" Height="32" VerticalAlignment="Center"
+                                Text="{Binding DestinationName}"
+                                ToolTip="{Binding DestinationDescription}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+                      
+            <!--<Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
             <TextBox Grid.Column="1" Grid.Row="1" Width="160" IsEnabled="False" Text="{Binding Path= LocalIP }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
             <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.DestinationPort }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="3" Width="80">AE TITLE:</Label>
             <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.DestinationAE }" Style="{StaticResource strText}" />
-            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Width="240" FontSize="11">↑If this AE is another PC,do not use 'Move To'</Label>
+            <Label Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Width="240" FontSize="11">↑If this AE is another PC,do not use 'Move To'</Label>-->
         </Grid>
-        <Grid Grid.Column="2" Grid.Row="2">
+        <Grid Grid.Column="3" Grid.Row="3" Background="#74b9ff">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -116,22 +210,38 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="240">(Move To)</Label>
-            <Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="80">(Move To)</Label>
+            <ComboBox Grid.Column="0" Grid.Row="1" Width="200" Grid.ColumnSpan="2"  ItemsSource="{Binding setting.ToList, Mode=OneWay}" SelectedIndex="{Binding setting.ToSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Path=ButtonIsEnabled}" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Height="32">
+                            <Image Source="{Binding ToImage}"></Image>
+                            <TextBlock FontSize="18" Height="32" VerticalAlignment="Center"
+                                Text="{Binding ToName}"
+                                ToolTip="{Binding ToDescription}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
+            <!--<Label Grid.Column="0" Grid.Row="1" Width="80">IP:</Label>
             <TextBox Grid.Column="1" Grid.Row="1" Width="160" Text="{Binding Path=setting.ToServerIP }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="2" Width="80">Port:</Label>
             <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=setting.ToServerPort }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="3" Width="80">SCP AE:</Label>
             <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=setting.ToCallingAETitle }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="4" Width="80">SCU AE:</Label>
-            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.ToCalledAETitle }" Style="{StaticResource strText}" />
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=setting.ToCalledAETitle }" Style="{StaticResource strText}" />-->
         </Grid>
-        <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  >
-            <Label Content="{Binding ErrMessege}" FontSize="14" FontWeight="Bold" Foreground="Blue" />
+        <StatusBar Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"  >
+            <Label Content="{Binding ErrMessege}" FontSize="14" FontWeight="Bold"  Foreground="{Binding ErrMessegeColor}" />
             <Separator/>
             <Label Content="Studies:"/>
             <Label Content="{Binding currentCount.StudiesCurrent}"/>

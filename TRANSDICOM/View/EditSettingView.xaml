@@ -1,0 +1,237 @@
+﻿<Window x:Class="TRANSDICOM.View.EditSettingView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TRANSDICOM.View"
+        xmlns:vm="clr-namespace:TRANSDICOM.ViewModel"
+        xmlns:xc="clr-namespace:TRANSDICOM.Behavior"
+        mc:Ignorable="d"
+        Title="TRANSDICOM Valid Code Co., Ltd (What time is it? Game time,woo) Edit Setting" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ResourceDictionary Source="/Behavior/StyleDictionary.xaml" />
+    </Window.Resources>
+    <Grid Background="#636e72">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0" Margin="5,5,3,5" Background="#55efc4" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="80">(Move From)</Label>
+            <DockPanel  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,5,0,5" >
+                <ComboBox Width="160" Margin="10,0,0,0" ItemsSource="{Binding setting.FromList, Mode=OneWay}" SelectedIndex="{Binding setting.FromSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding FromName}"
+                                ToolTip="{Binding FromDescription}"
+                        />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <Button Command="{Binding FromAddCommand}"  DockPanel.Dock="Left" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/add_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Add</Label>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding FromDelCommand}"  DockPanel.Dock="Right" Margin="5,0,3,0"  >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/delete_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Del</Label>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Name:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path=FromName }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=FromServerIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=FromServerPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=FromCallingAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="6" Width="160" Text="{Binding Path=FromCalledAETitle }" Style="{StaticResource strText}" />
+            <Button Command="{Binding FromEchoCommand}"  Grid.Column="1"  Grid.Row="7" Width="160">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/outgoing_data_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                    <Label Height="24" VerticalContentAlignment="Center" >Echo</Label>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="0" Margin="0,5,3,5" Background="#ffeaa7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="80">(Destination)</Label>
+            <DockPanel  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,5,0,5" >
+                <ComboBox Width="160" Margin="10,0,0,0" ItemsSource="{Binding setting.DestinationList, Mode=OneWay}" SelectedIndex="{Binding setting.DestinationSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding DestinationName}"
+                                ToolTip="{Binding DestinationDescription}"
+                        />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <Button Command="{Binding DestinationAddCommand}"  DockPanel.Dock="Left" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/add_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Add</Label>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding DestinationDelCommand}"  DockPanel.Dock="Right" Margin="5,0,3,0"  >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/delete_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Del</Label>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Name:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path= DestinationName }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" IsEnabled="False" Text="{Binding Path= LocalIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=DestinationPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="5" Width="80">AE TITLE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=DestinationAE }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Width="240" FontSize="11">↑If this AE is another PC,do not use 'Move To'</Label>
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="0" Margin="0,5,3,5" Background="#74b9ff">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Width="80">(Move To)</Label>
+            <DockPanel  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5,5,0,5" >
+                <ComboBox Width="160" Margin="10,0,0,0" ItemsSource="{Binding setting.ToList, Mode=OneWay}" SelectedIndex="{Binding setting.ToSelectIndex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Text="{Binding ToName}"
+                                ToolTip="{Binding ToDescription}"
+                        />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+                <Button Command="{Binding ToAddCommand}"  DockPanel.Dock="Left" Margin="5,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/add_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Add</Label>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding ToDelCommand}"  DockPanel.Dock="Right" Margin="5,0,3,0"  >
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/delete_subnode_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                        <Label Height="24" VerticalContentAlignment="Center" >Del</Label>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+
+            <Label Grid.Column="0" Grid.Row="2" Width="80">Name:</Label>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="160" Text="{Binding Path= ToName }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="3" Width="80">IP:</Label>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=ToServerIP }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="4" Width="80">Port:</Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=ToServerPort }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=ToCallingAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU AE:</Label>
+            <TextBox Grid.Column="1" Grid.Row="6" Width="160" Text="{Binding Path=ToCalledAETitle }" Style="{StaticResource strText}" />
+            <Button Command="{Binding ToEchoCommand}"  Grid.Column="1"  Grid.Row="7" Width="160">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/img/outgoing_data_96px.png" Width="24" Height="24" Stretch="Fill"   />
+                    <Label Height="24" VerticalContentAlignment="Center" >Echo</Label>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" Margin="5,0,5,5" >
+            <DockPanel  >
+                <Button Command="{Binding SaveCommand}"  DockPanel.Dock="Left" Width="160" Margin="200,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/img/ok_96px.png" Width="32" Height="32" />
+                        <Label Height="32" VerticalContentAlignment="Center" >Save</Label>
+                    </StackPanel>
+                </Button>
+                <Button Command="{Binding CancelCommand}"  DockPanel.Dock="Right" Width="160" Margin="5,0,5,0"  >
+                    <StackPanel Orientation="Horizontal"  >
+                        <Image Source="/img/cancel_96px.png" Width="32" Height="32"  />
+                        <Label Height="32" VerticalContentAlignment="Center" >Close</Label>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"  Margin="5,0,5,5" >
+            <xc:CustomListView ItemsSource="{Binding LstEchoMessege, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key"  x:Name="lvLstEchoMessege" Height="200" />
+        </StackPanel>
+        <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  Margin="5,0,5,5"  >
+            <Label Content="{Binding ErrMessege}" FontSize="14" FontWeight="Bold" Foreground="{Binding ErrMessegeColor}" />
+        </StatusBar>
+
+
+    </Grid>
+</Window>

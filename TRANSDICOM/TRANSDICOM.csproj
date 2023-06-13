@@ -12,8 +12,8 @@
     <BaseOutputPath></BaseOutputPath>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
+    <AssemblyVersion>2.0.1</AssemblyVersion>
+    <FileVersion>2.0.1</FileVersion>
     <Configurations>Debug;Release;x86</Configurations>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
@@ -23,24 +23,426 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="img\add_subnode_96px.png" />
+    <None Remove="img\cancel_96px.png" />
+    <None Remove="img\database_administrator_96px.png" />
+    <None Remove="img\delete_subnode_96px.png" />
+    <None Remove="img\export_96px.png" />
+    <None Remove="img\folder_96px.png" />
+    <None Remove="img\icons8_baseball_ball.ico" />
+    <None Remove="img\icons8_baseball_ball_16.png" />
+    <None Remove="img\icons8_baseball_ball_32.png" />
+    <None Remove="img\icons8_basketball.ico" />
+    <None Remove="img\icons8_basketball_16.png" />
+    <None Remove="img\icons8_basketball_32.png" />
+    <None Remove="img\icons8_bear.ico" />
+    <None Remove="img\icons8_bear_16.png" />
+    <None Remove="img\icons8_bear_32.png" />
+    <None Remove="img\icons8_billiard_ball.ico" />
+    <None Remove="img\icons8_billiard_ball_16.png" />
+    <None Remove="img\icons8_billiard_ball_32.png" />
+    <None Remove="img\icons8_blossom.ico" />
+    <None Remove="img\icons8_blossom_16.png" />
+    <None Remove="img\icons8_blossom_32.png" />
+    <None Remove="img\icons8_broccoli.ico" />
+    <None Remove="img\icons8_broccoli_16.png" />
+    <None Remove="img\icons8_broccoli_32.png" />
+    <None Remove="img\icons8_cactus.ico" />
+    <None Remove="img\icons8_cactus_16.png" />
+    <None Remove="img\icons8_cactus_32.png" />
+    <None Remove="img\icons8_cat.ico" />
+    <None Remove="img\icons8_cat_16.png" />
+    <None Remove="img\icons8_cat_32.png" />
+    <None Remove="img\icons8_crocodile.ico" />
+    <None Remove="img\icons8_crocodile_16.png" />
+    <None Remove="img\icons8_crocodile_32.png" />
+    <None Remove="img\icons8_Disco_Ball.ico" />
+    <None Remove="img\icons8_Disco_Ball_16.png" />
+    <None Remove="img\icons8_Disco_Ball_32.png" />
+    <None Remove="img\icons8_dog.ico" />
+    <None Remove="img\icons8_dog_16.png" />
+    <None Remove="img\icons8_dog_32.png" />
+    <None Remove="img\icons8_duck.ico" />
+    <None Remove="img\icons8_duck_16.png" />
+    <None Remove="img\icons8_duck_32.png" />
+    <None Remove="img\icons8_flower.ico" />
+    <None Remove="img\icons8_flower_16.png" />
+    <None Remove="img\icons8_flower_32.png" />
+    <None Remove="img\icons8_hops.ico" />
+    <None Remove="img\icons8_hops_16.png" />
+    <None Remove="img\icons8_hops_32.png" />
+    <None Remove="img\icons8_lotus.ico" />
+    <None Remove="img\icons8_lotus_16.png" />
+    <None Remove="img\icons8_lotus_32.png" />
+    <None Remove="img\icons8_panda.ico" />
+    <None Remove="img\icons8_panda_16.png" />
+    <None Remove="img\icons8_panda_32.png" />
+    <None Remove="img\icons8_pig_face.ico" />
+    <None Remove="img\icons8_pig_face_16.png" />
+    <None Remove="img\icons8_pig_face_32.png" />
+    <None Remove="img\icons8_pokeball.ico" />
+    <None Remove="img\icons8_pokeball_16.png" />
+    <None Remove="img\icons8_pokeball_32.png" />
+    <None Remove="img\icons8_rabbit_face.ico" />
+    <None Remove="img\icons8_rabbit_face_16.png" />
+    <None Remove="img\icons8_rabbit_face_32.png" />
+    <None Remove="img\icons8_rose.ico" />
+    <None Remove="img\icons8_rose_16.png" />
+    <None Remove="img\icons8_rose_32.png" />
+    <None Remove="img\icons8_rugby_football.ico" />
+    <None Remove="img\icons8_rugby_football_16.png" />
+    <None Remove="img\icons8_rugby_football_32.png" />
+    <None Remove="img\icons8_shuttlecock.ico" />
+    <None Remove="img\icons8_shuttlecock_16.png" />
+    <None Remove="img\icons8_shuttlecock_32.png" />
+    <None Remove="img\icons8_soccer_ball.ico" />
+    <None Remove="img\icons8_soccer_ball_16.png" />
+    <None Remove="img\icons8_soccer_ball_32.png" />
+    <None Remove="img\icons8_sunflower.ico" />
+    <None Remove="img\icons8_sunflower_16.png" />
+    <None Remove="img\icons8_sunflower_32.png" />
+    <None Remove="img\icons8_tennis.ico" />
+    <None Remove="img\icons8_tennis_16.png" />
+    <None Remove="img\icons8_tennis_32.png" />
+    <None Remove="img\icons8_three_leaf_clover.ico" />
+    <None Remove="img\icons8_three_leaf_clover_16.png" />
+    <None Remove="img\icons8_three_leaf_clover_32.png" />
+    <None Remove="img\icons8_tiger_face.ico" />
+    <None Remove="img\icons8_tiger_face_16.png" />
+    <None Remove="img\icons8_tiger_face_32.png" />
+    <None Remove="img\icons8_tulip.ico" />
+    <None Remove="img\icons8_tulip_16.png" />
+    <None Remove="img\icons8_tulip_32.png" />
+    <None Remove="img\icons8_volleyball.ico" />
+    <None Remove="img\icons8_volleyball_16.png" />
+    <None Remove="img\icons8_volleyball_32.png" />
+    <None Remove="img\icons8_zebra.ico" />
+    <None Remove="img\icons8_zebra_16.png" />
+    <None Remove="img\icons8_zebra_32.png" />
     <None Remove="img\icon_001430_16.png" />
     <None Remove="img\icon_017100_16.png" />
+    <None Remove="img\ok_96px.png" />
+    <None Remove="img\outgoing_data_96px.png" />
+    <None Remove="img\search_96px.png" />
+    <None Remove="img\x-ray_96px.png" />
     <None Remove="readme.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <Content Include="img\add_subnode_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\cancel_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\database_administrator_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\delete_subnode_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\export_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\folder_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_baseball_ball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_baseball_ball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_baseball_ball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_basketball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_basketball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_basketball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_bear.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_bear_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_bear_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_billiard_ball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_billiard_ball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_billiard_ball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_blossom.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_blossom_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_blossom_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_broccoli.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_broccoli_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_broccoli_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cactus.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cactus_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cactus_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cat.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cat_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_cat_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_crocodile.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_crocodile_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_crocodile_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_Disco_Ball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_Disco_Ball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_Disco_Ball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_dog.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_dog_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_dog_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_duck.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_duck_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_duck_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_flower.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_flower_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_flower_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_hops.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_hops_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_hops_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_lotus.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_lotus_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_lotus_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_panda.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_panda_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_panda_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pig_face.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pig_face_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pig_face_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pokeball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pokeball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_pokeball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rabbit_face.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rabbit_face_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rabbit_face_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rose.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rose_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rose_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rugby_football.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rugby_football_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_rugby_football_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_shuttlecock.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_shuttlecock_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_shuttlecock_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_soccer_ball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_soccer_ball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_soccer_ball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_sunflower.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_sunflower_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_sunflower_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tennis.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tennis_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tennis_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_three_leaf_clover.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_three_leaf_clover_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_three_leaf_clover_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tiger_face.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tiger_face_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tiger_face_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tulip.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tulip_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_tulip_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_volleyball.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_volleyball_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_volleyball_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_zebra.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_zebra_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\icons8_zebra_32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="img\icon_001430_16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="img\icon_017100_16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="img\ok_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\outgoing_data_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\search_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\x-ray_96px.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="readme.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="fo-dicom.Imaging.ImageSharp" Version="5.1.0" />
     <PackageReference Include="fo-dicom.NetCore" Version="4.0.8" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
   </ItemGroup>
 
   <ItemGroup>

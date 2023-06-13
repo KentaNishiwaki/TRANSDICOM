@@ -1,7 +1,8 @@
 {
   "profiles": {
     "TRANSDICOM": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "00001001"
     }
   }
 }

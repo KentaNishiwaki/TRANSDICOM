@@ -41,6 +41,12 @@ namespace TRANSDICOM.View
             {
                 viewModel.OnLoaded();
             };
+            this.btnCashPath.Click += (s, e) =>
+            {
+                string msgtext = viewModel.ShowCashPath();
+                if (MessageBox.Show("You can copy the path by OK. \r\n" + msgtext, "Cash Path. (OK to copy),", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                { Clipboard.SetText(msgtext); }
+            };
         }
     }
 }

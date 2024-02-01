@@ -451,15 +451,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TRANSDICOM"
-        "ProductCode" = "8:{BC822A36-B981-405E-8614-90767BC3391A}"
-        "PackageCode" = "8:{85A8778F-E23B-40C5-8BBB-F14071BFB818}"
+        "ProductCode" = "8:{D265EF9A-48CD-40A0-A956-CAAB11317034}"
+        "PackageCode" = "8:{F8731948-FDE7-458B-8E93-BAE6D78C15A0}"
         "UpgradeCode" = "8:{E1E6EF2A-78A9-4D46-9322-47B3DF05AD6E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.1.0"
+        "ProductVersion" = "8:2.1.4"
         "Manufacturer" = "8:Valid Code Co., Ltd"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1015,7 +1015,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A43EA1B497714D0B801076E4603B20D8"
             {
-            "SourcePath" = "8:..\\TRANSDICOM\\obj\\Release\\net7.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\TRANSDICOM\\obj\\x86\\x86\\net7.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_34F2BB22263A429FAD35AA373C8E9469"

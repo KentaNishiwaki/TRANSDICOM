@@ -12,8 +12,8 @@
     <BaseOutputPath></BaseOutputPath>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
-    <AssemblyVersion>2.0.1</AssemblyVersion>
-    <FileVersion>2.0.1</FileVersion>
+    <AssemblyVersion>2.0.3</AssemblyVersion>
+    <FileVersion>2.0.3</FileVersion>
     <Configurations>Debug;Release;x86</Configurations>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>

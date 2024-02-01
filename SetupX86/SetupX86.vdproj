@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_64EEE896E92B4830B14B26A2C7AC99DA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_94F4C8322472478AAC85BA80237B3277"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -184,26 +178,6 @@
             "TargetName" = "8:README.md"
             "Tag" = "8:"
             "Folder" = "8:_34F2BB22263A429FAD35AA373C8E9469"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_64EEE896E92B4830B14B26A2C7AC99DA"
-            {
-            "SourcePath" = "8:..\\TRANSDICOM\\bin\\x86\\x86\\net7.0-windows\\runtimes\\win7-x86\\native\\sni.dll"
-            "TargetName" = "8:sni.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_0C2EE133668E46C8B4D54A89F4D94BB5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -478,7 +452,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TRANSDICOM"
         "ProductCode" = "8:{BC822A36-B981-405E-8614-90767BC3391A}"
-        "PackageCode" = "8:{3240E89B-B2B4-48DC-BEE2-4873ADAADBDD}"
+        "PackageCode" = "8:{85A8778F-E23B-40C5-8BBB-F14071BFB818}"
         "UpgradeCode" = "8:{E1E6EF2A-78A9-4D46-9322-47B3DF05AD6E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

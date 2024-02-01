@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using TRANSDICOM.Common;
 using TRANSDICOM.Model;
 
@@ -244,6 +245,12 @@ namespace TRANSDICOM.ViewModel
             ButtonIsEnabled = false;
             switch (e)
             {
+                case "AssociationRequestTimeoutInMs":
+                case "AssociationReleaseTimeoutInMs":
+                case "AssociationLingerTimeoutInMs":
+                    noEditChange = false;
+                    EditChange();
+                    break;
                 case "FromSelectIndex":
                     if (setting.FromSelectIndex >= 0)
                     {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TRANSDICOM.Common;
 
@@ -18,6 +19,7 @@ namespace TRANSDICOM.Model
         public DicomClientModel(Setting _setting) 
         {
             setting = _setting;
+            useTls = false;
         }
 
         int _CMoveCount = 0;
@@ -32,18 +34,33 @@ namespace TRANSDICOM.Model
         int _CStoreCurrent = 0;
         public int CStoreCurrent { get { return _CStoreCurrent; } set { _CStoreCurrent = value; RaisePropertyChanged("CStoreCurrent"); } }
 
+
+        bool useTls = false;
+
         public List<studiesInfo> GetStudies(string PatientID)
         {
             try
-            { 
+            {
+                List<echomessege> status = new List<echomessege>();
+                int index = 1;
+
                 var studies = new List<studiesInfo>();
                 var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
-                    , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
+                    , useTls, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle
+                    , setting.AssociationRequestTimeoutInMs, setting.AssociationReleaseTimeoutInMs, setting.AssociationLingerTimeoutInMs);
+
                 var cfind = DicomCFindRequest.CreateStudyQuery(PatientID);
+                cfind.Dataset.Remove(DicomTag.IssuerOfPatientID);
+                cfind.Dataset.Remove(DicomTag.StudyDescription);
+                cfind.Dataset.Remove(DicomTag.NumberOfStudyRelatedSeries);
+                cfind.Dataset.Remove(DicomTag.NumberOfStudyRelatedInstances);
                 bool resComplete = false;
-            
+
+                string strErr = string.Empty;
                 cfind.OnResponseReceived = (DicomCFindRequest rq, DicomCFindResponse rp) =>
                 {
+                    status.Add(new echomessege(index, rp.Status.ToString() + ":Comment:" + rp.Status.ErrorComment + "Description:" + rp.Status.Description));
+                    index++;
                     if (rp.Status.State == DicomState.Pending)
                     {
                         if (rp.Dataset != null)
@@ -52,6 +69,10 @@ namespace TRANSDICOM.Model
                             if (rp.Dataset.Contains(DicomTag.StudyDate))
                             {
                                 studydate = rp.Dataset.GetValueOrDefault(DicomTag.StudyDate, 0, "");
+                            }
+                            if (rp.Dataset.Contains(DicomTag.ModalitiesInStudy))
+                            {
+                                studydate = studydate + " : " + rp.Dataset.GetValueOrDefault(DicomTag.ModalitiesInStudy, 0, "");
                             }
                             string patientName = string.Empty;
                             if (rp.Dataset.Contains(DicomTag.PatientName))
@@ -71,6 +92,8 @@ namespace TRANSDICOM.Model
                     }
                     else if (rp.Status.State == DicomState.Failure)
                     {
+                        //strErr = "Comment:" + rp.Status.ErrorComment + "\n"
+                        //        + "Description:" + rp.Status.Description;
                         resComplete = true;
                     }
                     else if (rp.Status.State == DicomState.Warning)
@@ -85,6 +108,7 @@ namespace TRANSDICOM.Model
                 };
                 client.AddRequestAsync(cfind);
                 client.StateChanged += (s, e) => {
+                    status.Add(new echomessege(index, e.NewState.ToString()));
                     if (e.NewState.ToString() == "COMPLETED")
                     {
                         resComplete = true;
@@ -98,6 +122,15 @@ namespace TRANSDICOM.Model
                 {
                     // Log("waiting...waiting....");
                 }
+
+                if (string.IsNullOrEmpty(strErr) == false)
+                {
+                    foreach (var s in status)
+                    {
+                        strErr = strErr + s.Messege + "\r\n";
+                    }
+                    throw new Exception(strErr);
+                }
                 return studies;
             } catch (Exception ex) { throw ex; }
         }
@@ -105,7 +138,8 @@ namespace TRANSDICOM.Model
         {
             var series = new List<seriesInfo>();
             var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
-                , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
+                , useTls, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle
+                , setting.AssociationRequestTimeoutInMs, setting.AssociationReleaseTimeoutInMs, setting.AssociationLingerTimeoutInMs);
             var cfind = DicomCFindRequest.CreateSeriesQuery(StudyInstanceUID);
             bool resComplete = false;
             cfind.OnResponseReceived = (DicomCFindRequest rq, DicomCFindResponse rp) =>
@@ -159,7 +193,8 @@ namespace TRANSDICOM.Model
         public bool ExecCMove(seriesInfo series)
         {
             var client = new Dicom.Network.Client.DicomClient(setting.FromList[setting.FromSelectIndex].FromServerIP, setting.FromList[setting.FromSelectIndex].FromServerPort
-                , false, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle);
+                , useTls, setting.FromList[setting.FromSelectIndex].FromCallingAETitle, setting.FromList[setting.FromSelectIndex].FromCalledAETitle
+                , setting.AssociationRequestTimeoutInMs, setting.AssociationReleaseTimeoutInMs, setting.AssociationLingerTimeoutInMs);
             var cmove = new DicomCMoveRequest(setting.DestinationList[setting.DestinationSelectIndex].DestinationAE, series.StudyInstanceUID, series.SeriesInstanceUID);
             bool moveComplete = false;
             cmove.OnResponseReceived += (DicomCMoveRequest request, DicomCMoveResponse response) =>
@@ -228,7 +263,8 @@ namespace TRANSDICOM.Model
                 {
                     CStoreCurrent = CStoreCurrent + 1;
                     var client = new Dicom.Network.Client.DicomClient(setting.ToList[setting.ToSelectIndex].ToServerIP, setting.ToList[setting.ToSelectIndex].ToServerPort
-                                    , false, setting.ToList[setting.ToSelectIndex].ToCalledAETitle, setting.ToList[setting.ToSelectIndex].ToCallingAETitle);
+                                    , useTls, setting.ToList[setting.ToSelectIndex].ToCalledAETitle, setting.ToList[setting.ToSelectIndex].ToCallingAETitle
+                                    , setting.AssociationRequestTimeoutInMs, setting.AssociationReleaseTimeoutInMs, setting.AssociationLingerTimeoutInMs);
                     var cstore = new DicomCStoreRequest(f.FullName);
                     bool reqComplete = false;
 
@@ -427,7 +463,8 @@ namespace TRANSDICOM.Model
             try
             {
                 var client = new Dicom.Network.Client.DicomClient(fromServerIP, fromServerPort
-                    , false, fromCalledAETitle, fromCallingAETitle);
+                    , useTls, fromCalledAETitle, fromCallingAETitle
+                    , setting.AssociationRequestTimeoutInMs, setting.AssociationReleaseTimeoutInMs, setting.AssociationLingerTimeoutInMs);
                 var echo = new DicomCEchoRequest();
                 bool echoComplete = false;
                 echo.OnResponseReceived = (DicomCEchoRequest rq, DicomCEchoResponse rp) =>

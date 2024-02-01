@@ -23,7 +23,6 @@ namespace TRANSDICOM.Common
         private List<PacsFrom> _FromList = new List<PacsFrom>();
         public List<PacsFrom> FromList { get { return _FromList; } set { _FromList = value; RaisePropertyChanged("FromList"); } }
 
-
         public class PacsFrom : ViewModelBase
         {
             string _FromName = "";
@@ -257,6 +256,12 @@ namespace TRANSDICOM.Common
         }
 
 
+        private int _AssociationRequestTimeoutInMs = 5000;
+        private int _AssociationReleaseTimeoutInMs = 10000;
+        private int _AssociationLingerTimeoutInMs = 50;
+        public int AssociationRequestTimeoutInMs { get { return _AssociationRequestTimeoutInMs; } set { _AssociationRequestTimeoutInMs = value; RaisePropertyChanged("AssociationRequestTimeoutInMs"); } }
+        public int AssociationReleaseTimeoutInMs { get { return _AssociationReleaseTimeoutInMs; } set { _AssociationReleaseTimeoutInMs = value; RaisePropertyChanged("AssociationReleaseTimeoutInMs"); } }
+        public int AssociationLingerTimeoutInMs { get { return _AssociationLingerTimeoutInMs; } set { _AssociationLingerTimeoutInMs = value; RaisePropertyChanged("AssociationLingerTimeoutInMs"); } }
 
 
 
@@ -272,6 +277,11 @@ namespace TRANSDICOM.Common
                 FromSelectIndex = setting.FromSelectIndex;
                 DestinationSelectIndex = setting.DestinationSelectIndex;
                 ToSelectIndex = setting.ToSelectIndex;
+
+                AssociationRequestTimeoutInMs = setting.AssociationRequestTimeoutInMs;
+                AssociationReleaseTimeoutInMs = setting.AssociationReleaseTimeoutInMs;
+                AssociationLingerTimeoutInMs = setting.AssociationLingerTimeoutInMs;
+
                 //FromServerIP = setting.FromServerIP;
                 //FromServerPort = setting.FromServerPort;
                 //FromCallingAETitle = setting.FromCallingAETitle;

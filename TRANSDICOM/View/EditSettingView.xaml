@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Column="0" Grid.Row="0" Margin="5,5,3,5" Background="#55efc4" >
@@ -76,10 +77,10 @@
             <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=FromServerIP }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="4" Width="80">Port:</Label>
             <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=FromServerPort }" Style="{StaticResource strText}" />
-            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP AE:</Label>
-            <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=FromCallingAETitle }" Style="{StaticResource strText}" />
-            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU AE:</Label>
-            <TextBox Grid.Column="1" Grid.Row="6" Width="160" Text="{Binding Path=FromCalledAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP (Called):</Label>
+            <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=FromCalledAETitle }" Style="{StaticResource strText}" />
+            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU (Calling):</Label>
+            <TextBox Grid.Column="1" Grid.Row="6" Width="160" Text="{Binding Path=FromCallingAETitle }" Style="{StaticResource strText}" />
             <Button Command="{Binding FromEchoCommand}"  Grid.Column="1"  Grid.Row="7" Width="160">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/img/outgoing_data_96px.png" Width="24" Height="24" Stretch="Fill"   />
@@ -198,9 +199,9 @@
             <TextBox Grid.Column="1" Grid.Row="3" Width="160" Text="{Binding Path=ToServerIP }" Style="{StaticResource strText}" />
             <Label Grid.Column="0" Grid.Row="4" Width="80">Port:</Label>
             <TextBox Grid.Column="1" Grid.Row="4" Width="160" Text="{Binding Path=ToServerPort }" Style="{StaticResource strText}" />
-            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP AE:</Label>
+            <Label Grid.Column="0" Grid.Row="5" Width="80">SCP (Calling):</Label>
             <TextBox Grid.Column="1" Grid.Row="5" Width="160" Text="{Binding Path=ToCallingAETitle }" Style="{StaticResource strText}" />
-            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU AE:</Label>
+            <Label Grid.Column="0" Grid.Row="6" Width="80">SCU (Called):</Label>
             <TextBox Grid.Column="1" Grid.Row="6" Width="160" Text="{Binding Path=ToCalledAETitle }" Style="{StaticResource strText}" />
             <Button Command="{Binding ToEchoCommand}"  Grid.Column="1"  Grid.Row="7" Width="160">
                 <StackPanel Orientation="Horizontal">
@@ -210,6 +211,16 @@
             </Button>
         </Grid>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Vertical" Margin="5,0,5,5" >
+            <DockPanel  >
+                <Label  DockPanel.Dock="Left" Margin="100,0,5,0" >RequestTimeoutInMs(5000)</Label>
+                <TextBox   DockPanel.Dock="Left" Width="60"  Text="{Binding setting.AssociationRequestTimeoutInMs,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource strNum}" />
+                <Label  DockPanel.Dock="Left"  Margin="50,0,5,0" >ReleaseTimeoutInMs(10000)</Label>
+                <TextBox   DockPanel.Dock="Left" Width="60"  Text="{Binding setting.AssociationReleaseTimeoutInMs,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource strNum}" />
+                <Label  DockPanel.Dock="Left"  Margin="50,0,5,0" >LingerTimeoutInMs(50)</Label>
+                <TextBox   DockPanel.Dock="Left" Width="60"  Text="{Binding setting.AssociationLingerTimeoutInMs,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource strNum}" />
+            </DockPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Orientation="Vertical" Margin="5,0,5,5" >
             <DockPanel  >
                 <Button Command="{Binding SaveCommand}"  DockPanel.Dock="Left" Width="160" Margin="200,0,5,0" IsEnabled="{Binding Path=ButtonIsEnabled}">
                     <StackPanel Orientation="Horizontal">
@@ -225,10 +236,10 @@
                 </Button>
             </DockPanel>
         </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3"  Margin="5,0,5,5" >
+        <StackPanel Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  Margin="5,0,5,5" >
             <xc:CustomListView ItemsSource="{Binding LstEchoMessege, Mode=OneWay}" DisplayMemberPath="Value" SelectedValuePath="Key"  x:Name="lvLstEchoMessege" Height="200" />
         </StackPanel>
-        <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3"  Margin="5,0,5,5"  >
+        <StatusBar Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"  Margin="5,0,5,5"  >
             <Label Content="{Binding ErrMessege}" FontSize="14" FontWeight="Bold" Foreground="{Binding ErrMessegeColor}" />
         </StatusBar>
 
